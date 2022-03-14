@@ -38,7 +38,6 @@
             this.divider = new System.Windows.Forms.Label();
             this.qKey = new System.Windows.Forms.Button();
             this.aKey = new System.Windows.Forms.Button();
-            this.zKey = new System.Windows.Forms.Button();
             this.xKey = new System.Windows.Forms.Button();
             this.cKey = new System.Windows.Forms.Button();
             this.nKey = new System.Windows.Forms.Button();
@@ -64,6 +63,7 @@
             this.wKey = new System.Windows.Forms.Button();
             this.enterKey = new System.Windows.Forms.Button();
             this.backspaceKey = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,7 +156,7 @@
             this.divider.TabIndex = 4;
             this.divider.Text = "End of Grid";
             this.divider.Visible = false;
-            this.divider.Click += new System.EventHandler(this.Keyboard_Click);
+            //this.divider.Click += new System.EventHandler(this.OnScreenKeyboardClick);
             // 
             // qKey
             // 
@@ -183,19 +183,6 @@
             this.aKey.TabIndex = 7;
             this.aKey.Text = "A";
             this.aKey.UseVisualStyleBackColor = false;
-            // 
-            // zKey
-            // 
-            this.zKey.BackColor = System.Drawing.Color.DarkGray;
-            this.zKey.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.zKey.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.zKey.ForeColor = System.Drawing.SystemColors.Control;
-            this.zKey.Location = new System.Drawing.Point(190, 666);
-            this.zKey.Name = "zKey";
-            this.zKey.Size = new System.Drawing.Size(54, 64);
-            this.zKey.TabIndex = 8;
-            this.zKey.Text = "Z";
-            this.zKey.UseVisualStyleBackColor = false;
             // 
             // xKey
             // 
@@ -522,6 +509,19 @@
             this.backspaceKey.Text = "<=";
             this.backspaceKey.UseVisualStyleBackColor = false;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DarkGray;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(190, 666);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(54, 64);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "Z";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // wurdleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -529,6 +529,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(800, 770);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.backspaceKey);
             this.Controls.Add(this.enterKey);
             this.Controls.Add(this.pKey);
@@ -554,7 +555,6 @@
             this.Controls.Add(this.vKey);
             this.Controls.Add(this.cKey);
             this.Controls.Add(this.xKey);
-            this.Controls.Add(this.zKey);
             this.Controls.Add(this.aKey);
             this.Controls.Add(this.qKey);
             this.Controls.Add(this.divider);
@@ -586,7 +586,6 @@
         private Label divider;
         private Button qKey;
         private Button aKey;
-        private Button zKey;
         private Button xKey;
         private Button cKey;
         private Button nKey;
@@ -612,5 +611,6 @@
         private Button wKey;
         private Button enterKey;
         private Button backspaceKey;
+        private Button button1;
     }
 }

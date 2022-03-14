@@ -2,26 +2,35 @@ namespace Wurdle
 {
     public partial class wurdleForm : Form
     {
-        TextBox[,] wurdleGrid = new TextBox[6,5];
+        InputHandler playerGuess = new InputHandler();
+        public static TextBox[,] wurdleGrid = new TextBox[6,5];
+        public static int row = 0;
+        public static int col = 0;
         public wurdleForm()
         {
             InitializeComponent();
             menuStrip1.Renderer = new CustomThemeRenderer();
             formatUILayout();
+            handleOnScreenKeyboardButtons();
         }
 
         private void formatUILayout()
         {
             wordleTextBox.Width = 64;
-            wordleTextBox.Location = new Point(wordleTextBox.Location.X, wordleTextBox.Location.Y);
+            wordleTextBox.Location = new Point(wordleTextBox.Location.X,
+                wordleTextBox.Location.Y);
             wordleTextBox.Height = wordleTextBox.Width;
             wordleTextBox.Dock = DockStyle.None;
             initializeWurdleGrid();
         }
 
+        /// <summary>
+        /// Assigns On-Screen keyboard buttons and
+        ///
+        /// </summary>
+
         private void initializeWurdleGrid() 
         {
-
             for (int i = 0; i < wurdleGrid.GetLength(0); i++)
             {
                 for (int j = 0; j < wurdleGrid.GetLength(1); j++) 
@@ -47,19 +56,33 @@ namespace Wurdle
                     }
                     else if (j == 0)
                     {
-                        temp.Location = new Point(wordleTextBox.Location.X, wordleTextBox.Location.Y + (67 * i));
+                        temp.Location = new Point(wordleTextBox.Location.X,
+                            wordleTextBox.Location.Y + (67 * i));
                         wurdleGrid[i, j] = temp;
                         this.Controls.Add(temp);
                     }
                     else
                     {
-                        temp.Location = new Point(wordleTextBox.Location.X + (67 * j), wordleTextBox.Location.Y + (67 * i));
+                        temp.Location = new Point(wordleTextBox.Location.X + (67 * j),
+                            wordleTextBox.Location.Y + (67 * i));
                         wurdleGrid[i, j] = temp;
                         this.Controls.Add(temp);
                     }
                 }
             }
         }
+        private void handleOnScreenKeyboardButtons()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    (control as Button).Click += playerGuess.OnScreenKeyboardClick;
+                }
+            }
+        }
+
+
         private class CustomThemeRenderer : ToolStripProfessionalRenderer
         {
             public CustomThemeRenderer() : base(new CustomThemeColors()) { }
@@ -82,9 +105,8 @@ namespace Wurdle
 
         }
 
-        private void Keyboard_Click(object sender, EventArgs e)
+        private void PhysicalKeyboardClick(object sender, KeyPressEventArgs e) 
         {
-
         }
     }
 
