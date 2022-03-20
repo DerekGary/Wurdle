@@ -57,13 +57,13 @@
             this.iKey = new System.Windows.Forms.Button();
             this.uKey = new System.Windows.Forms.Button();
             this.yKey = new System.Windows.Forms.Button();
-            this.tKey = new System.Windows.Forms.Button();
             this.rKey = new System.Windows.Forms.Button();
             this.eKey = new System.Windows.Forms.Button();
             this.wKey = new System.Windows.Forms.Button();
             this.enterKey = new System.Windows.Forms.Button();
             this.backspaceKey = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.tKey = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,7 +156,6 @@
             this.divider.TabIndex = 4;
             this.divider.Text = "End of Grid";
             this.divider.Visible = false;
-            //this.divider.Click += new System.EventHandler(this.OnScreenKeyboardClick);
             // 
             // qKey
             // 
@@ -431,19 +430,6 @@
             this.yKey.Text = "Y";
             this.yKey.UseVisualStyleBackColor = false;
             // 
-            // tKey
-            // 
-            this.tKey.BackColor = System.Drawing.Color.DarkGray;
-            this.tKey.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.tKey.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tKey.ForeColor = System.Drawing.SystemColors.Control;
-            this.tKey.Location = new System.Drawing.Point(343, 526);
-            this.tKey.Name = "tKey";
-            this.tKey.Size = new System.Drawing.Size(54, 64);
-            this.tKey.TabIndex = 26;
-            this.tKey.Text = "T";
-            this.tKey.UseVisualStyleBackColor = false;
-            // 
             // rKey
             // 
             this.rKey.BackColor = System.Drawing.Color.DarkGray;
@@ -521,6 +507,19 @@
             this.button1.TabIndex = 34;
             this.button1.Text = "Z";
             this.button1.UseVisualStyleBackColor = false;
+            // 
+            // tKey
+            // 
+            this.tKey.BackColor = System.Drawing.Color.DarkGray;
+            this.tKey.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.tKey.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tKey.ForeColor = System.Drawing.SystemColors.Control;
+            this.tKey.Location = new System.Drawing.Point(343, 526);
+            this.tKey.Name = "tKey";
+            this.tKey.Size = new System.Drawing.Size(54, 64);
+            this.tKey.TabIndex = 26;
+            this.tKey.Text = "T";
+            this.tKey.UseVisualStyleBackColor = false;
             // 
             // wurdleForm
             // 
@@ -605,12 +604,12 @@
         private Button iKey;
         private Button uKey;
         private Button yKey;
-        private Button tKey;
         private Button rKey;
         private Button eKey;
         private Button wKey;
         private Button enterKey;
         private Button backspaceKey;
         private Button button1;
+        private Button tKey;
     }
 }
