@@ -6,29 +6,30 @@ namespace Wurdle
         private static int numOfRows = 6;
         private int col = 0;
         private int row = 0;
-        private bool firstCall = true;
+        private int isAWord;
         private TextBox[,] wurdleGrid = new TextBox[numOfRows, numOfCols];
-        RandomWordGenerator randWord = new RandomWordGenerator();
-
+        private List<Button> buttonList = new List<Button>();
+        private List<string> rowColorPattern = new List<string>();
+        private readonly RandomWordGenerator randWord = new();
 
         public wurdleForm()
         {
             InitializeComponent();
             menuStrip1.Renderer = new CustomThemeRenderer();
-            formatUILayout();
-            handleOnScreenKeyboardButtons();
+            FormatUILayout();
+            SubscribeOnScreenKeyboardButtons();
         }
 
-        private void formatUILayout()
+        private void FormatUILayout()
         {
             wordleTextBox.Width = 64;
             wordleTextBox.Location = new Point(wordleTextBox.Location.X,
                 wordleTextBox.Location.Y);
             wordleTextBox.Height = wordleTextBox.Width;
             wordleTextBox.Dock = DockStyle.None;
-            initializeWurdleGrid();
+            InitializeWurdleGrid();
         }
-        private void initializeWurdleGrid()
+        private void InitializeWurdleGrid()
         {
             int spaceBetweenBoxes = wordleTextBox.Size.Width + 4;
             for (int i = 0; i < wurdleGrid.GetLength(0); i++)
@@ -71,7 +72,8 @@ namespace Wurdle
                 }
             }
         }
-        private void handleOnScreenKeyboardButtons()
+
+        private void SubscribeOnScreenKeyboardButtons()
         {
             foreach (Control control in this.Controls)
             {
@@ -81,6 +83,7 @@ namespace Wurdle
                 }
             }
         }
+
         private void OnScreenKeyboardClick(object? sender, EventArgs e)
         {
             Button? buttonClicked = sender as Button;
@@ -89,44 +92,70 @@ namespace Wurdle
                 if (col != 0)
                 {
                     col--;
+                    buttonList.RemoveAt(buttonList.Count - 1);
+                    rowColorPattern.RemoveAt(rowColorPattern.Count - 1);
                     wurdleGrid[row, col].Text = " ";
                     wurdleGrid[row, col].BackColor = wordleTextBox.BackColor;
                 }
             }
+
             else if (buttonClicked.Text == "ENTER")
             {
                 if (col == numOfCols)
                 {
-                    wordCheck();
+                    WordValidityCheck();
+                    AssignRowColorPattern();
+                    buttonList.Clear();
+                    rowColorPattern.Clear();
                     row++;
                     col = 0;
                 }
-                if (row == numOfRows) 
+
+                if (row == numOfRows)
                 {
                     MessageBox.Show("Game Over.");
                 }
             }
+
             else if (col < numOfCols && row < numOfRows)
             {
                 wurdleGrid[row, col].Text = buttonClicked.Text;
+                LetterCheck(buttonClicked);
                 col++;
             }
         }
 
-        private void wordCheck()
+        private void AssignRowColorPattern()
         {
-            if (firstCall == true)
+            if (isAWord == 1)
             {
-                randWord.readList();
-                firstCall = false;
+                for (int i = 0; i < rowColorPattern.Count; i++)
+                {
+                    if (rowColorPattern[i] == "R")
+                    {
+                        buttonList[i].Enabled = false;
+                        buttonList[i].Visible = false;
+                        wurdleGrid[row, i].BackColor = Color.Red;
+                    }
+                    else if (rowColorPattern[i] == "Y")
+                    {
+                        wurdleGrid[row, i].BackColor = Color.FromArgb(204, 204, 0);
+                    }
+                    else
+                    {
+                        wurdleGrid[row, i].BackColor = Color.Green;
+                    }
+                }
             }
+        }
 
+        private void WordValidityCheck()
+        {
             for (int i = 0; i < numOfCols; i++)
             {
-                int isAWord = randWord.buildStringAndMatch(wurdleGrid[row, i].Text, numOfCols);
+                isAWord = randWord.BuildStringAndMatch(wurdleGrid[row, i].Text, numOfCols);
                 if (isAWord == 0)
                 {
-                    MessageBox.Show("Your current word is not part of the list of possible words.");
                     for (int a = 0; a < numOfCols; a++)
                     {
                         wurdleGrid[row, a].Text = " ";
@@ -135,36 +164,20 @@ namespace Wurdle
                     col = 0;
                 }
             }
+        }
 
-            if (col == numOfCols)
-            {
-                string colorGuide = randWord.checkUserWordAgainstWinner();
-                for (int a = 0; a < colorGuide.Length; a++)
-                {
-                    if (colorGuide[a].ToString() == "G")
-                    {
-                        wurdleGrid[row, a].BackColor = Color.Green;
-                    }
-                    else if (colorGuide[a].ToString() == "Y")
-                    {
-                        wurdleGrid[row, a].BackColor = Color.FromArgb(204,204,0);
-                    }
-                    else
-                    {
-                        wurdleGrid[row, a].BackColor = Color.Red;                     
-                    }
-                }
-                if (colorGuide.Contains("GGGGG")) 
-                {
-                    MessageBox.Show("You guessed the word correctly.");
-                }
-            }
+        private void LetterCheck(Button buttonClicked)
+        {
+            string boxColorChoice = randWord.CheckLetterAgainstWinner(wurdleGrid[row, col].Text, col);
+            buttonList.Add(buttonClicked);
+            rowColorPattern.Add(boxColorChoice);
         }
 
         private class CustomThemeRenderer : ToolStripProfessionalRenderer
         {
             public CustomThemeRenderer() : base(new CustomThemeColors()) { }
         }
+
         private class CustomThemeColors : ProfessionalColorTable
         {
             public override Color MenuItemSelectedGradientBegin => Color.FromArgb(85, 85, 85);

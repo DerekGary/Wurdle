@@ -9,10 +9,11 @@ namespace Wurdle
     class RandomWordGenerator
     {
         private string? winningWord;
-        List<string> wordsList = new List<string>();
+        private bool firstRunCheck = true;
+        private List<string> wordsList = new List<string>();
         StringBuilder userWord = new StringBuilder("");
         StringBuilder wordColorCoordination = new StringBuilder("");
-        public void readList()
+        public void ReadList()
         {
             Random randomNum = new Random();
             try
@@ -23,7 +24,7 @@ namespace Wurdle
                     string[] data = reader.ReadLine().Split(',');
                     wordsList.AddRange(data);
                 }
-                chooseCorrectWord(wordsList, randomNum);
+                ChooseCorrectWord(wordsList, randomNum);
 
             }
             catch (FileNotFoundException)
@@ -32,27 +33,36 @@ namespace Wurdle
             }
         }
 
-        private void chooseCorrectWord(List<string> wordsList, Random randomNum)
+        private void ChooseCorrectWord(List<string> wordsList, Random randomNum)
         {
             int winningWordIndexNum = randomNum.Next(0, wordsList.Count);
             winningWord = wordsList[winningWordIndexNum].ToUpper();
         }
 
-        public int buildStringAndMatch(string currentLetter, int numOfCols)
+        public int BuildStringAndMatch(string currentLetter, int numOfCols)
         {
             userWord.Append(currentLetter);
             if (userWord.Length == numOfCols)
             {
-                bool wordCheck = checkIfInWordList(userWord.ToString());
+                bool wordCheck = CheckIfInWordList(userWord.ToString());
                 if (wordCheck == false)
                 {
                     userWord.Clear();
                     return 0;
                 }
+                else if (wordCheck == true && userWord.ToString().Contains(winningWord.ToString())) 
+                {
+                    MessageBox.Show("Congratulations, you've won.");
+                    userWord.Clear();
+                }
+                else 
+                {
+                    userWord.Clear();
+                }
             }
             return 1;
         }
-        private bool checkIfInWordList(string currentUserWord) 
+        private bool CheckIfInWordList(string currentUserWord) 
         {
             if (wordsList.Contains(currentUserWord.ToLower())) 
             {
@@ -60,30 +70,31 @@ namespace Wurdle
             }
             else 
             {
+                MessageBox.Show(currentUserWord + " is not a valid word.");
                 return false;
             }
-        }
-        public string checkUserWordAgainstWinner() 
+        } 
+        public string CheckLetterAgainstWinner(string userInput, int currentColNum) 
         {
-            wordColorCoordination.Clear();
-            MessageBox.Show(winningWord.ToString());
-            for(int i = 0; i < winningWord.Length; i++) 
+            if (firstRunCheck == true) 
             {
-                if (winningWord[i] == userWord[i])
-                {
-                    wordColorCoordination.Append("G");
-                }
-                else if (winningWord.Contains(userWord[i])) 
-                {
-                    wordColorCoordination.Append("Y");
-                }
-                else 
-                {
-                    wordColorCoordination.Append("R");
-                }
+                ReadList();
+                MessageBox.Show(winningWord);
+                firstRunCheck = false;
             }
-            userWord.Clear();
-            return wordColorCoordination.ToString();
+            if (userInput == winningWord[currentColNum].ToString())
+            {
+                return "G";
+            }
+            else if (winningWord.Contains(userInput))
+            {
+                return "Y";
+            }
+            else 
+            {
+                return "R";
+            }
         }
+    
     }
 }
