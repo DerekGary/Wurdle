@@ -16,6 +16,7 @@ namespace Wurdle
         {
             InitializeComponent();
             menuStrip1.Renderer = new CustomThemeRenderer();
+            exitToolStripMenuItem.Click += (s, e) => this.Close();
             FormatUILayout();
             SubscribeOnScreenKeyboardButtons();
         }
@@ -29,6 +30,7 @@ namespace Wurdle
             wordleTextBox.Dock = DockStyle.None;
             InitializeWurdleGrid();
         }
+        
         private void InitializeWurdleGrid()
         {
             int spaceBetweenBoxes = wordleTextBox.Size.Width + 4;
@@ -80,6 +82,8 @@ namespace Wurdle
                 if (control is Button)
                 {
                     (control as Button).Click += OnScreenKeyboardClick;
+                    (control as Button).Enabled = true;
+                    (control as Button).Visible = true;
                 }
             }
         }
@@ -113,7 +117,8 @@ namespace Wurdle
 
                 if (row == numOfRows)
                 {
-                    MessageBox.Show("Game Over.");
+                    randWord.GameOverSequence();
+                    UnsubscribeOnScreenKeyboardButtons();
                 }
             }
 
@@ -127,6 +132,7 @@ namespace Wurdle
 
         private void AssignRowColorPattern()
         {
+            // Integer value of 1 indicates the word is a part of the list of accepted words.
             if (isAWord == 1)
             {
                 for (int i = 0; i < rowColorPattern.Count; i++)
@@ -145,6 +151,51 @@ namespace Wurdle
                     {
                         wurdleGrid[row, i].BackColor = Color.Green;
                     }
+                }
+            }
+            // Integer value of 3 indicates that the word guessed matches the winning word.
+            else if (isAWord == 3)
+            {
+                for (int i = 0; i < rowColorPattern.Count; i++)
+                {
+                    wurdleGrid[row, i].BackColor = Color.Green;
+                }
+                UnsubscribeOnScreenKeyboardButtons();
+                DialogResult winningMessage = MessageBox.Show($"Congratulations, you've guessed the correct word in {row + 1} tries. Would you like to restart?",
+                    "Winner Winner Chicken Dinner!", MessageBoxButtons.YesNo);
+                if (winningMessage == DialogResult.Yes)
+                {
+                    RestartGame();
+                }
+            }
+        }
+        
+        private void RestartGame()
+        {
+            buttonList.Clear();
+            rowColorPattern.Clear();
+            for (int i = 0; i <= row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    wurdleGrid[i, j].Text = " ";
+                    wurdleGrid[i, j].BackColor = wordleTextBox.BackColor;
+                }
+            }
+            col = 0;
+            row = -1;
+            SubscribeOnScreenKeyboardButtons();
+        }
+        
+        private void UnsubscribeOnScreenKeyboardButtons()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    (control as Button).Click -= OnScreenKeyboardClick;
+                    (control as Button).Visible = false;
+
                 }
             }
         }
@@ -186,19 +237,12 @@ namespace Wurdle
             public override Color MenuItemPressedGradientEnd => Color.FromArgb(61, 61, 61);
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+        { 
+            HelpForm helpForm = new HelpForm();
+            helpForm.ShowDialog();
         }
 
-        private void wurdleForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PhysicalKeyboardClick(object sender, KeyPressEventArgs e)
-        {
-        }
     }
 
 }

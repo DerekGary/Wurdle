@@ -12,7 +12,7 @@ namespace Wurdle
         private bool firstRunCheck = true;
         private List<string> wordsList = new List<string>();
         StringBuilder userWord = new StringBuilder("");
-        StringBuilder wordColorCoordination = new StringBuilder("");
+        
         public void ReadList()
         {
             Random randomNum = new Random();
@@ -37,6 +37,7 @@ namespace Wurdle
         {
             int winningWordIndexNum = randomNum.Next(0, wordsList.Count);
             winningWord = wordsList[winningWordIndexNum].ToUpper();
+            MessageBox.Show($"The Winning Word: {winningWord}", "HAX");
         }
 
         public int BuildStringAndMatch(string currentLetter, int numOfCols)
@@ -52,8 +53,10 @@ namespace Wurdle
                 }
                 else if (wordCheck == true && userWord.ToString().Contains(winningWord.ToString())) 
                 {
-                    MessageBox.Show("Congratulations, you've won.");
                     userWord.Clear();
+                    wordsList.Clear();
+                    firstRunCheck = true;
+                    return 3;
                 }
                 else 
                 {
@@ -62,6 +65,7 @@ namespace Wurdle
             }
             return 1;
         }
+        
         private bool CheckIfInWordList(string currentUserWord) 
         {
             if (wordsList.Contains(currentUserWord.ToLower())) 
@@ -73,13 +77,13 @@ namespace Wurdle
                 MessageBox.Show(currentUserWord + " is not a valid word.");
                 return false;
             }
-        } 
+        }
+        
         public string CheckLetterAgainstWinner(string userInput, int currentColNum) 
         {
             if (firstRunCheck == true) 
             {
                 ReadList();
-                MessageBox.Show(winningWord);
                 firstRunCheck = false;
             }
             if (userInput == winningWord[currentColNum].ToString())
@@ -94,6 +98,11 @@ namespace Wurdle
             {
                 return "R";
             }
+        }
+        
+        public void GameOverSequence() 
+        {
+            MessageBox.Show($"You did not guess the word correctly.\nThe correct word was {winningWord}.");
         }
     
     }

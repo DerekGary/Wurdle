@@ -113,8 +113,9 @@
             this.documentationToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.documentationToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(210, 34);
+            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.documentationToolStripMenuItem.Text = "How to Play";
+            this.documentationToolStripMenuItem.Click += new System.EventHandler(this.documentationToolStripMenuItem_Click);
             // 
             // wordleTextBox
             // 
@@ -564,8 +565,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "wurdleForm";
-            this.Text = "Wurdle";
-            this.Load += new System.EventHandler(this.wurdleForm_Load);
+            this.Text = "Wurdle | Game";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
